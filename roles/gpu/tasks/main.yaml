@@ -1,5 +1,19 @@
 ---
 
+# Basic pre-playbook prerequisites.
+# We need the openshift/kubernetes module amongst other things...
+
+- name: Install prerequisite Python modules
+  pip:
+    name:
+    - openshift==0.10.0
+    - jmespath==0.9.4
+    extra_args: --user
+
+- name: Login (admin)
+  command: oc login https://{{ okd_master_hostname }} -u {{ okd_admin }} -p {{ okd_admin_password }}
+  changed_when: False
+
 - name: Create Device Plugin SCC and Service Account
   k8s:
     definition: "{{ lookup('file', item) }}"
