@@ -19,8 +19,8 @@
     definition: "{{ lookup('file', item) }}"
     wait: yes
   loop:
-  - nvidia-deviceplugin-sa.yaml.j2
-  - nvidia-deviceplugin-scc.yaml.j2
+  - nvidia-deviceplugin-sa.yaml
+  - nvidia-deviceplugin-scc.yaml
 
 - name: Create Device Plugin DaemonSet
   k8s:
