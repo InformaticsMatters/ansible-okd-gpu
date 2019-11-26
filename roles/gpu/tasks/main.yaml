@@ -1,0 +1,14 @@
+---
+
+- name: Create Device Plugin SCC and Service Account
+  k8s:
+    definition: "{{ lookup('file', item) }}"
+    wait: yes
+  loop:
+  - nvidia-deviceplugin-sa.yaml.j2
+  - nvidia-deviceplugin-scc.yaml.j2
+
+- name: Create Device Plugin DaemonSet
+  k8s:
+    definition: "{{ lookup('template', 'nvidia-deviceplugin.yaml.j2') }}"
+    wait: yes
