@@ -7,6 +7,8 @@ nvidia_gpu_nodes:
 - xchem-gpu-001.novalocal
 
 # Variable controlling the test Pod play...
+# The test Pod should be able to run in any namespace
+# we use 'kube-system' because we know that'll exist.
 cuda_test_pod_namespace: kube-system
 cuda_test_pod_timeout: 120
 cuda_test_pod_min_cuda_version: '10.2'
