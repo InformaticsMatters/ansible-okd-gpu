@@ -37,6 +37,10 @@
     wait: yes
     wait_timeout: "{{ cuda_test_pod_timeout }}"
 
+- name: Pause
+  pasuse:
+    seconds: 5
+
 - name: Get test Pod logs
   command: oc logs cuda-vector-add
   register: log_result
