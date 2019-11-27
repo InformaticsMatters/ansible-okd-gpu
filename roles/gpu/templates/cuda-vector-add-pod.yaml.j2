@@ -3,19 +3,19 @@ kind: Pod
 apiVersion: v1
 metadata:
   name: cuda-vector-add
-  namespace: {{ nvidia_test_namespace }}
+  namespace: {{ cuda_test_pod_namespace }}
 spec:
   restartPolicy: OnFailure
   containers:
   - name: cuda-vector-add
-    image: mirrorgooglecontainers/cuda-vector-add:{{ nvidia_test_image_tag }}
+    image: mirrorgooglecontainers/cuda-vector-add:v0.1
     env:
     - name: NVIDIA_VISIBLE_DEVICES
       value: all
     - name: NVIDIA_DRIVER_CAPABILITIES
       value: compute,utility
     - name: NVIDIA_REQUIRE_CUDA
-      value: cuda>={{ nvidia_test_min_cuda_version }}
+      value: cuda>={{ cuda_test_pod_min_cuda_version }}
     resources:
       limits:
-        nvidia.com/gpu: {{ nvidia_test_gpu_limit }}
+        nvidia.com/gpu: {{ cuda_test_pod_gpu_limit }}

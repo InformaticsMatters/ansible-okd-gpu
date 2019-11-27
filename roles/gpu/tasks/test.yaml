@@ -1,5 +1,10 @@
 ---
 
+# This test is based on the 'Deploy a pod that requests a GPU'
+# section of the OpenShift 3.9 documentation: -
+#
+# https://blog.openshift.com/use-gpus-with-device-plugin-in-openshift-3-9/
+
 # Basic pre-playbook prerequisites.
 # We need the openshift/kubernetes module amongst other things...
 
@@ -14,7 +19,28 @@
   command: oc login https://{{ okd_master_hostname }} -u {{ okd_admin }} -p {{ okd_admin_password }}
   changed_when: False
 
-- name: Create Vector Add Pod
+# Run the test Pod, waiting for completion.
+# When it's done remove the Pod.
+
+- name: Create Vector-Add test Pod
   k8s:
     definition: "{{ lookup('template', 'cuda-vector-add-pod.yaml.j2') }}"
+    wait: yes
+    wait_condition:
+      type: Complete
+      status: yes
+
+- name: Get test Pod logs
+  command: oc logs cuda-vector-add
+  register: log_result
+  changed_when: False
+
+- name: Assert test success
+  assert:
+    that: log_result.stdout|regex_search('Test PASSED', multiline=True)
+
+- name: Remove test Pod
+  k8s:
+    definition: "{{ lookup('template', 'cuda-vector-add-pod.yaml.j2') }}"
+    state: absent
     wait: yes
