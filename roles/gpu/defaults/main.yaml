@@ -4,5 +4,6 @@ nvidia_deviceplugin_version: '1.11'
 
 # Variable controlling the test Pod play...
 cuda_test_pod_namespace: kube-system
+cuda_test_pod_timeout: 120
 cuda_test_pod_min_cuda_version: '10.2'
 cuda_test_pod_gpu_limit: 1

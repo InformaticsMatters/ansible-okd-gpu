@@ -22,13 +22,24 @@
 # Run the test Pod, waiting for completion.
 # When it's done remove the Pod.
 
+- name: Remove pre-existsing Vector-Add test Pod
+  k8s:
+    definition: "{{ lookup('template', 'cuda-vector-add-pod.yaml.j2') }}"
+    state: absent
+    wait: yes
+
+# For wait conditions it's worth reading...
+# https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle
+
 - name: Create Vector-Add test Pod
   k8s:
     definition: "{{ lookup('template', 'cuda-vector-add-pod.yaml.j2') }}"
     wait: yes
+    wait_timeout: "{{ cuda_test_pod_timeout }}"
     wait_condition:
-      type: Complete
-      status: yes
+      reason: Completed
+      type: Ready
+      status: true
 
 - name: Get test Pod logs
   command: oc logs cuda-vector-add
@@ -38,9 +49,3 @@
 - name: Assert test success
   assert:
     that: log_result.stdout|regex_search('Test PASSED', multiline=True)
-
-- name: Remove test Pod
-  k8s:
-    definition: "{{ lookup('template', 'cuda-vector-add-pod.yaml.j2') }}"
-    state: absent
-    wait: yes
