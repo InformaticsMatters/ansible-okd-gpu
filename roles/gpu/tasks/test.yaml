@@ -1,5 +1,9 @@
 ---
 
+# The play launches a Vector-Add demo image and then waits
+# for the Pod to Complete before continuing to inspect the Pod's logs
+# to ensure that it contains text that indicates the execution passed.
+#
 # This test is based on the 'Deploy a pod that requests a GPU'
 # section of the OpenShift 3.9 documentation: -
 #
