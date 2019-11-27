@@ -2,6 +2,10 @@
 
 nvidia_deviceplugin_version: '1.11'
 
+# A list of nodes in the cluster that are GPU nodes.
+nvidia_gpu_nodes:
+- xchem-gpu-001.novalocal
+
 # Variable controlling the test Pod play...
 cuda_test_pod_namespace: kube-system
 cuda_test_pod_timeout: 120

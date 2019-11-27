@@ -22,6 +22,14 @@
   - nvidia-deviceplugin-sa.yaml
   - nvidia-deviceplugin-scc.yaml
 
+- name: Label the GPU nodes (nvidia.com/gpu)
+  command: oc label no/{{ item }} nvidia.com/gpu=true --overwrite
+  loop: "{{ nvidia_gpu_nodes }}"
+
+- name: Label the GPU nodes (openshift.com/gpu-accelerator)
+  command: oc label no/{{ item }} openshift.com/gpu-accelerator=true --overwrite
+  loop: "{{ nvidia_gpu_nodes }}"
+
 - name: Create Device Plugin DaemonSet
   k8s:
     definition: "{{ lookup('template', 'nvidia-deviceplugin-daemonset.yaml.j2') }}"
