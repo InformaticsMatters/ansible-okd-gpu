@@ -12,7 +12,6 @@
   pip:
     name:
     - openshift==0.10.0
-    - jmespath==0.9.4
     extra_args: --user
 
 - name: Login (admin)
@@ -46,7 +45,7 @@
   changed_when: False
 
 - name: Get Pod log
-  command: oc logs cuda-vector-add
+  command: oc logs cuda-vector-add --namespace {{ cuda_test_pod_namespace }}
   register: log_result
   changed_when: False
 
