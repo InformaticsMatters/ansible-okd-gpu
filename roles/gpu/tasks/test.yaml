@@ -35,7 +35,6 @@
   k8s:
     definition: "{{ lookup('template', 'cuda-vector-add-pod.yaml.j2') }}"
     wait: yes
-    wait_timeout: "{{ cuda_test_pod_timeout }}"
 
 - name: Pause
   pause:
