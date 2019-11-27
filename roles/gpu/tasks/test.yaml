@@ -38,7 +38,7 @@
     wait_timeout: "{{ cuda_test_pod_timeout }}"
 
 - name: Pause
-  pasuse:
+  pause:
     seconds: 5
 
 - name: Get test Pod logs
