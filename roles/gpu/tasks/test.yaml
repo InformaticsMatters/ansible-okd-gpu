@@ -38,7 +38,7 @@
     wait_timeout: "{{ cuda_test_pod_timeout }}"
     wait_condition:
       reason: Completed
-      type: Ready
+      type: Terminated
       status: true
 
 - name: Get test Pod logs
