@@ -34,7 +34,6 @@
 - name: Create Vector-Add test Pod
   k8s:
     definition: "{{ lookup('template', 'cuda-vector-add-pod.yaml.j2') }}"
-    wait: yes
 
 - name: Wait for Pod completion
   shell: oc get po/cuda-vector-add | grep Completed
@@ -49,6 +48,6 @@
   register: log_result
   changed_when: False
 
-- name: Assert test success
+- name: Assert Pod success
   assert:
     that: log_result.stdout|regex_search('Test PASSED', multiline=True)
