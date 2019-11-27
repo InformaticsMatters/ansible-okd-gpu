@@ -36,14 +36,16 @@
     definition: "{{ lookup('template', 'cuda-vector-add-pod.yaml.j2') }}"
 
 - name: Wait for Pod completion
-  shell: oc get po/cuda-vector-add | grep Completed
+  shell: >-
+    oc get po/cuda-vector-add --namespace {{ cuda_test_pod_namespace }}
+    | grep Completed
   register: result
   delay: 5
   retries: "{{ (cuda_test_pod_timeout|int / 5)|int }}"
   until: result.rc == 0
   changed_when: False
 
-- name: Get test Pod log
+- name: Get Pod log
   command: oc logs cuda-vector-add
   register: log_result
   changed_when: False
