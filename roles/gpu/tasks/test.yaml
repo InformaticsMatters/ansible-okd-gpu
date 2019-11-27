@@ -14,15 +14,7 @@
   command: oc login https://{{ okd_master_hostname }} -u {{ okd_admin }} -p {{ okd_admin_password }}
   changed_when: False
 
-- name: Create Device Plugin SCC and Service Account
+- name: Create Vector Add Pod
   k8s:
-    definition: "{{ lookup('file', item) }}"
-    wait: yes
-  loop:
-  - nvidia-deviceplugin-sa.yaml
-  - nvidia-deviceplugin-scc.yaml
-
-- name: Create Device Plugin DaemonSet
-  k8s:
-    definition: "{{ lookup('template', 'nvidia-deviceplugin-daemonset.yaml.j2') }}"
+    definition: "{{ lookup('template', 'cuda-vector-add-pod.yaml.j2') }}"
     wait: yes

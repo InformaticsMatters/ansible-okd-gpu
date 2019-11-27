@@ -1,3 +1,9 @@
 ---
 
 nvidia_deviceplugin_version: '1.11'
+
+# Variable controlling the test play...
+nvidia_test_namespace: kube-system
+nvidia_test_image_tag: v0.1
+nvidia_test_min_cuda_version: '8.0'
+nvidia_test_gpu_limit: 1

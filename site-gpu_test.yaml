@@ -1,0 +1,7 @@
+---
+
+- hosts: cli_node
+  tasks:
+  - include_role:
+      name: gpu
+      tasks_from: test.yaml
