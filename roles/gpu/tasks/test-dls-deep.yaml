@@ -1,0 +1,48 @@
+---
+
+# The play launches the dls-deep image and then waits
+# for the Pod to Complete.
+#
+# This test is based on the 'Deploy a pod that requests a GPU'
+# section of the OpenShift 3.9 documentation: -
+#
+# https://blog.openshift.com/use-gpus-with-device-plugin-in-openshift-3-9/
+
+# Basic pre-playbook prerequisites.
+# We need the openshift/kubernetes module amongst other things...
+
+- name: Install prerequisite Python modules
+  pip:
+    name:
+    - openshift==0.10.0
+    extra_args: --user
+
+- name: Login (admin)
+  command: oc login https://{{ okd_master_hostname }} -u {{ okd_admin }} -p {{ okd_admin_password }}
+  changed_when: False
+
+# Run the test Pod, waiting for completion.
+# When it's done remove the Pod.
+
+- name: Remove pre-existsing dls-deep test Pod
+  k8s:
+    definition: "{{ lookup('template', 'cuda-dls-deep-pod.yaml.j2') }}"
+    state: absent
+    wait: yes
+
+# For wait conditions it's worth reading...
+# https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle
+
+- name: Create dls-deep test Pod
+  k8s:
+    definition: "{{ lookup('template', 'cuda-dls-deep-pod.yaml.j2') }}"
+
+- name: Wait for Pod completion
+  shell: >-
+    oc get po/cuda-dls-deep --namespace {{ cuda_test_pod_namespace }}
+    | grep Completed
+  register: result
+  delay: 5
+  retries: "{{ (cuda_dls_deep_pod_timeout|int / 5)|int }}"
+  until: result.rc == 0
+  changed_when: False

@@ -1,0 +1,21 @@
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: cuda-dls-deep
+  namespace: {{ cuda_test_pod_namespace }}
+spec:
+  restartPolicy: OnFailure
+  containers:
+  - name: cuda-dls-deep
+    image: informaticsmatters/deep-app-ubuntu-1604:latest
+    env:
+    - name: NVIDIA_VISIBLE_DEVICES
+      value: all
+    - name: NVIDIA_DRIVER_CAPABILITIES
+      value: compute,utility
+    - name: NVIDIA_REQUIRE_CUDA
+      value: cuda>={{ cuda_test_pod_min_cuda_version }}
+    resources:
+      limits:
+        nvidia.com/gpu: {{ cuda_test_pod_gpu_limit }}

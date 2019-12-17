@@ -13,3 +13,5 @@ cuda_test_pod_namespace: kube-system
 cuda_test_pod_timeout: 120
 cuda_test_pod_min_cuda_version: '10.2'
 cuda_test_pod_gpu_limit: 1
+
+cuda_dls_deep_pod_timeout: 180
