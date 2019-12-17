@@ -9,7 +9,6 @@ spec:
   containers:
   - name: cuda-dls-deep
     image: informaticsmatters/deep-app-ubuntu-1604:latest
-    command: ["./call_main.sh"]
     env:
     - name: NVIDIA_VISIBLE_DEVICES
       value: all
